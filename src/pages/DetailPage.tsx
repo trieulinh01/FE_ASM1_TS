@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { read } from "../api/product";
 const DetailPage = () => {
   const [product, setProduct] = useState<Product>();
+  const [categoryData, setCategoryData] = useState<Product>();
    // Get the userId param from the URL.
   const { id } = useParams();
   console.log(id);
@@ -15,18 +16,39 @@ const DetailPage = () => {
   useEffect(() => {
     fetchProduct();
   }, [id]);
-
+  const fetchCategoryData = async (category: string) => {
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+      const data = await response.json();
+      setCategoryData(data);
+    } catch (error) {
+      console.error("Error", error);
+    }
+  };
+  useEffect(() => {
+    if (product) {
+      fetchCategoryData(product.category); 
+    }
+  }, [product]);
     return (
     <div>
+      
+     
      {product && ( <section className="overflow-hidden text-gray-700 bg-white body-font">
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap mx-auto lg:w-4/5">
+      
           <img
             alt="ecommerce"
             className="object-cover object-center w-full border border-gray-200 rounded lg:w-1/2"
             src={product.image}
           />
           <div className="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
+          {categoryData && (
+        <div>
+          <h3 className="mb-1 text-xl font-medium text-gray-900 title-font">Category: {product?.category}</h3>
+        </div>
+      )}
             <h2 className="text-sm tracking-widest text-gray-500 title-font">
               Linh'Store
             </h2>
@@ -189,6 +211,8 @@ const DetailPage = () => {
           </div>
         </div>
       </div>
+      
+      
     </section>
      )}
      </div>
