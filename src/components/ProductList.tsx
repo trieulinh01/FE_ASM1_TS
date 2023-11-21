@@ -7,7 +7,6 @@ interface ProductListProps {
 const ProductList : React.FC<ProductListProps>= ({ products }) => {
   return (
     <div  className="grid grid-cols-4 gap-6 mx-5 mt-5">
-    {/* Đặt logic hiển thị sản phẩm ở đây */}
     {products.map((product, index) => (
       <div key={index} >
           <div className="w-full h-[330px] max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
