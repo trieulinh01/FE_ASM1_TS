@@ -6,7 +6,7 @@ type Rate={
 }
 
 type Product = {
-    id: number;
+    id: string;
     title: string;
     price: number;
     description: string;
@@ -14,6 +14,7 @@ type Product = {
     category: string;
     rating:Rate
   };
+
 
 
   export default Product

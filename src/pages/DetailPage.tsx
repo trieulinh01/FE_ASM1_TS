@@ -7,7 +7,6 @@ const DetailPage = () => {
   const [product, setProduct] = useState<Product>();
   const [categoryData, setCategoryData] = useState<Product>();
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-   // Get the userId param from the URL.
   const { id } = useParams();
  // console.log(id);
   const fetchProduct = async () => {
@@ -36,7 +35,6 @@ const DetailPage = () => {
     try {
       const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
       const data = await response.json();
-      // Exclude the current product from related products
       const filteredProducts = data.filter((relatedProduct: Product) => relatedProduct.id !== Number(id));
       setRelatedProducts(filteredProducts);
     } catch (error) {
@@ -48,6 +46,7 @@ const DetailPage = () => {
       fetchRelatedProducts(product.category);
     }
   }, [product, id]);
+  
     return (
     <div>
      {product && ( <section className="overflow-hidden text-gray-700 bg-white body-font">
@@ -55,7 +54,7 @@ const DetailPage = () => {
         <div className="flex flex-wrap mx-auto lg:w-4/5">    
           <img
             alt="ecommerce"
-            className=" hover:opacity-50 object-cover object-center w-full border border-gray-200 rounded lg:w-1/2"
+            className="object-cover object-center w-full border border-gray-200 rounded hover:opacity-50 lg:w-1/2"
             src={product.image}
           />
           <div className="w-full mt-6 lg:w-1/2 lg:pl-10 lg:py-6 lg:mt-0">
@@ -228,21 +227,21 @@ const DetailPage = () => {
         
           {categoryData && (
         <div>
-          <h3 className="mb-1 text-2xl  text-gray-900 text-center font-bold"> Related Products for <span className='text-3xl'>{product?.category}</span></h3>
+          <h3 className="mb-1 text-2xl font-bold text-center text-gray-900"> Related Products for <span className='text-3xl'>{product?.category}</span></h3>
         </div>
       )}
-          <div className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+          <div className="grid justify-center grid-cols-1 mx-auto mt-10 mb-5 w-fit lg:grid-cols-3 md:grid-cols-2 justify-items-center gap-y-20 gap-x-14">
             {relatedProducts.map((relatedProduct: Product) => (
               <div key={relatedProduct.id} >
                
-  <div className="w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+  <div className="duration-500 bg-white shadow-md w-72 rounded-xl hover:scale-105 hover:shadow-xl">
   <a href="#">
-    <img src={relatedProduct.image} alt="Product" className="h-80 w-72 object-cover rounded-t-xl" />
+    <img src={relatedProduct.image} alt="Product" className="object-cover h-80 w-72 rounded-t-xl" />
     <div className="px-4 py-3 w-72">
-      <span className="text-gray-400 mr-3 uppercase text-xs">Linh'Store</span>
-      <p className="text-lg font-bold text-black truncate block capitalize">{relatedProduct.title}</p>
+      <span className="mr-3 text-xs text-gray-400 uppercase">Linh'Store</span>
+      <p className="block text-lg font-bold text-black capitalize truncate">{relatedProduct.title}</p>
       <div className="flex items-center">
-        <p className="text-lg font-semibold text-black cursor-auto my-3">${relatedProduct.price}</p>
+        <p className="my-3 text-lg font-semibold text-black cursor-auto">${relatedProduct.price}</p>
        
         <div className="ml-auto"><svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} fill="currentColor" className="bi bi-bag-plus" viewBox="0 0 16 16">
             <path fillRule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5z" />
@@ -252,12 +251,6 @@ const DetailPage = () => {
     </div>
   </a>
 </div>
-
-               
-
-
-
-
               </div>
             ))}
           </div>

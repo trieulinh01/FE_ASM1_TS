@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import WebsiteLayout from "./pages/layouts/WebsiteLayout";
 import AdminLayout from "./pages/layouts/AdminLayout";
 import ShowInfor from "./pages/showInfor";
+import { configureAxios } from './config/axios'
 import './App.css';
 // import ProductAdd from "./pages/ProductAdd";
 import SignUp from "./pages/SignUp";
@@ -13,7 +14,7 @@ import SignUp from "./pages/SignUp";
 // import { useEffect, useState } from "react";
 // import { list } from "./api/product";
 import ManageProduct from "./pages/ManageProduct";
-
+configureAxios()
 
 function App() {
 //   const [products, setProducts] = useState<Product[]>([]);
