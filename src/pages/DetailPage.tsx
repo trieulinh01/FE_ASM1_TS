@@ -2,40 +2,29 @@
 import { useEffect, useState } from "react";
 import Product from "../types/Product"
 import { useParams } from "react-router-dom";
-import { read } from "../api/product";
+import axios from "axios";
+
 const DetailPage = () => {
   const [product, setProduct] = useState<Product>();
-  const [categoryData, setCategoryData] = useState<Product>();
+
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const { id } = useParams();
- // console.log(id);
+  //console.log(id);
   const fetchProduct = async () => {
-    const { data } = await read(id);
+    const { data } = await axios(`/products/${id}`);
     setProduct(data);
   };
   useEffect(() => {
     fetchProduct();
   }, [id]);
-  const fetchCategoryData = async (category: string) => {
-    try {
-      const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
-      const data = await response.json();
-     // console.log(response);
-      setCategoryData(data);
-    } catch (error) {
-      console.error("Error", error);
-    }
-  };
-  useEffect(() => {
-    if (product) {
-      fetchCategoryData(product.category); 
-    }
-  }, [product]);
+  
   const fetchRelatedProducts = async (category: string) => {
     try {
       const response = await fetch(`https://fakestoreapi.com/products/category/${category}`);
+      //console.log(response)
       const data = await response.json();
-      const filteredProducts = data.filter((relatedProduct: Product) => relatedProduct.id !== Number(id));
+      //console.log(data);
+      const filteredProducts = data.filter((relatedProduct: Product) => relatedProduct._id !== String(id));
       setRelatedProducts(filteredProducts);
     } catch (error) {
       console.error("Error", error);
@@ -225,14 +214,10 @@ const DetailPage = () => {
 {relatedProducts.length > 0 && (
         <section className="mt-8">
         
-          {categoryData && (
-        <div>
-          <h3 className="mb-1 text-2xl font-bold text-center text-gray-900"> Related Products for <span className='text-3xl'>{product?.category}</span></h3>
-        </div>
-      )}
+         
           <div className="grid justify-center grid-cols-1 mx-auto mt-10 mb-5 w-fit lg:grid-cols-3 md:grid-cols-2 justify-items-center gap-y-20 gap-x-14">
             {relatedProducts.map((relatedProduct: Product) => (
-              <div key={relatedProduct.id} >
+              <div key={relatedProduct._id} >
                
   <div className="duration-500 bg-white shadow-md w-72 rounded-xl hover:scale-105 hover:shadow-xl">
   <a href="#">

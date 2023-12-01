@@ -10,7 +10,7 @@ const ProductList : React.FC<ProductListProps>= ({ products }) => {
     {products.map((product, index) => (
       <div key={index} >
           <div className="w-full h-[330px] max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-  <Link to={`/products/${product.id}`}>
+  <Link to={`/products/${product._id}`}>
     <img className="p-8 mx-auto rounded-t-lg h-44" src={product.image} alt="product image" />
   </Link>
   <div className="px-5 pb-5">

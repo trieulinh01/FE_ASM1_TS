@@ -29,8 +29,8 @@ const AsideLayout = () => {
       </div>
     </div>
   </div>
-  <div className="flex flex-col ">
-    <button className="py-2 text-lg text-white bg-pink-500 rounded-full">Logout</button>
+  <div className="flex flex-col mb-36">
+    <Link to={'/'} className="py-2 text-lg font-bold text-center text-white bg-pink-500 rounded-full">Trang chủ</Link>
   </div>
 </div>
   )

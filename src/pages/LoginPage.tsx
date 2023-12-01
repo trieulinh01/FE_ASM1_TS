@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -10,11 +10,16 @@ type AccountInfo = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  const [errors] = useState<{ [key: string]: string }>({});
   const [accountInfo, setAccountInfo] = useState<AccountInfo>({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) navigate("/admin/products");
+  }, []);
 
   const handleChangeForm = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountInfo({ ...accountInfo, [event.target.name]: event.target.value });
@@ -22,10 +27,10 @@ const LoginPage = () => {
 
   const handleSubmitForm = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-    // validate show error
+   
     try {
       const { data } = await axios.post(
-        "https://hoadv-nodejs.vercel.app/auth/login",
+        "/auth/login",
         accountInfo
       );
       toast.success("Login Successfull!");
@@ -64,6 +69,9 @@ const LoginPage = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@company.com"
                 />
+                 {errors.email && (
+    <p className="text-sm text-red-500">{errors.email}</p>
+  )}
               </div>
               <div>
                 <label
@@ -81,7 +89,11 @@ const LoginPage = () => {
                   placeholder="••••••••"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 />
+                     {errors.password && (
+    <p className="text-sm text-red-500">{errors.password}</p>
+  )}
               </div>
+              
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">

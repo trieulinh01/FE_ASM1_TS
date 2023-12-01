@@ -14,6 +14,8 @@ import SignUp from "./pages/SignUp";
 // import { useEffect, useState } from "react";
 // import { list } from "./api/product";
 import ManageProduct from "./pages/ManageProduct";
+import AdminCreateProduct from "./pages/AdminCreateProduct";
+import AdminEditProduct from "./pages/AdminEditProduct";
 configureAxios()
 
 function App() {
@@ -43,6 +45,10 @@ function App() {
           <Route path="/admin" element={<AdminLayout/>}>
           <Route index element={<Dashboard />} />
           <Route path="/admin/products/"  element={<ManageProduct/>} />
+          <Route path="/admin/products/create" element={<AdminCreateProduct />} />
+          <Route path="/admin/products/edit/:productId" element={<AdminEditProduct  />} />
+        
+        
           {/* <Route path="/admin/products/add"  element={<ProductAdd onAdd={OnHandleAdd}/>} /> */}
           </Route>
           </Routes>

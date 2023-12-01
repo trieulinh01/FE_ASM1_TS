@@ -17,6 +17,7 @@ const Dashboard = () => {
             </svg>
           </div>
         </div>
+       
         <div className="flex items-center justify-between p-5 bg-white rounded shadow-sm">
           <div>
             <div className="text-sm text-gray-400 ">Check Out Today</div>

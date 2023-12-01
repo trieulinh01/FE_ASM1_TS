@@ -1,39 +1,51 @@
-import { useEffect, useState } from 'react';
-import Product from '../types/Product';
-import { list } from '../api/product';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-
-
+import { useEffect, useState } from "react";
+import  Product  from "../types/Product";
+import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const ManageProduct = () => {
+  
+  const navigate = useNavigate();
+  const [productList, setProductList] = useState<Product[]>([]);
 
-  const [ProductList, setProductList] = useState<Product[]>([]);
-
-  const fetchProduct = async () => {
+  const fetchProducts = async () => {
     try {
-      const { data } = await list();
+      const { data } = await axios.get("/products");
       setProductList(data);
     } catch (error) {
-      console.error("Error fetching product list:", error);
+      console.log(error);
+      toast.error("Get Product List Failed - " + error);
     }
   };
-  console.log(ProductList);
   useEffect(() => {
-    fetchProduct();
+    const token = localStorage.getItem("token");
+    if (!token) return navigate("/login");
+    fetchProducts();
   }, []);
-  const handleRemove=async (id:string) => {
-    try{
-      await axios.delete(`/products/${id}`);
-      fetchProduct();
-      toast.success('Product removed successfully')
-    }catch (error) {
-      toast.error("Error fetching product list"+error);
+  const handleRemoveProduct = async (id: string) => {
+    try {
+      // confirm dialog
+      if (confirm("Do you really remove product?")) {
+        await axios.delete(`/products/${id}`);
+        fetchProducts();
+        toast.success("Delete Successfull - " + id);
+      }
+    } catch (error) {
+      toast.error("Delete Failed - " + error);
     }
-  }
+  };
+
   return (
    
-
+<>
+<Link to={"/admin/products/create"}>
+        <button className="px-4 py-2 mb-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+          Create New Product
+        </button>
+</Link>
 <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+
   <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
@@ -55,7 +67,7 @@ const ManageProduct = () => {
       </tr>
     </thead>
     <tbody>
-    {ProductList.map((ProductItem,index)=>{
+    {productList.map((ProductItem,index)=>{
       return (
         <tr key={index} className="border-b odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
         <th scope="row" className="px-6 py-4 font-medium text-gray-900 dark:text-white">
@@ -70,12 +82,16 @@ const ManageProduct = () => {
         <td className="px-6 py-4">
         {ProductItem.price}
         </td>
-        <td className="px-6 py-4">
-          <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-        </td>
-        <button onClick={()=>handleRemove(ProductItem.id)} className="px-6 py-4 font-medium text-blue-600 dark:text-blue-500 hover:underline">
-         Remove
-        </button>
+        <td className="flex px-6 py-4">
+        <Link to={`/admin/products/edit/${ProductItem._id}`}>
+                      <button className="w-10 py-2 mb-4 ml-2 text-white bg-green-500 rounded dark:text-red-500 hover:underline hover:bg-blue-700">
+                        Edit
+                      </button>
+                    </Link>
+  <button onClick={() => handleRemoveProduct(ProductItem._id)} className="py-2 mb-4 ml-2 text-white bg-red-500 rounded dark:text-red-500 hover:underline hover:bg-blue-700">
+    Remove
+  </button>
+</td>
       </tr>
       )
     }
@@ -85,7 +101,7 @@ const ManageProduct = () => {
     </tbody>
   </table>
 </div>
-
+</>
 
   )
 }

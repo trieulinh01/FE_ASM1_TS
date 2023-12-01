@@ -1,20 +1,18 @@
-type Rate={
-    rating: {
-        rate: number;
-        count: number;
-      }
-}
+
 
 type Product = {
-    id: string;
+    _id: string;
     title: string;
     price: number;
     description: string;
     image: string;
     category: string;
-    rating:Rate
+    rate:number
   };
 
 
+  export type ProductFormParams = Omit<Product, "_id" | "category"> & {
+    category: string;
+  };
 
   export default Product
