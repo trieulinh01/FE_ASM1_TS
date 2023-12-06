@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import  Product from "../types/Product";
-import { Category } from "../types/Category";
+// import { Category } from "../types/Category";
 import { useEffect, useState } from "react";
 type ProductFormParams = {
     title: string;
@@ -25,9 +25,9 @@ const AdminEditProduct = () => {
   });
 
   const [productDetail, setProductDetail] = useState<Product | null>(null);
-  const [categoryList, setCategoryList] = useState<Category[]>([]);
+ // const [categoryList, setCategoryList] = useState<Category[]>([]);
   const [errors, setErrors] = useState<Partial<ProductFormParams>>({});
- console.log(categoryList);
+
  
   const fetchProductAndCategoryList = async (id: string) => {
     try {
@@ -59,7 +59,6 @@ const AdminEditProduct = () => {
     if (!productId) return;
     fetchProductAndCategoryList(productId);
   }, []);
-
   const handleChangeForm = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {

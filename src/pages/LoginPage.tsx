@@ -7,7 +7,6 @@ type AccountInfo = {
   email: string;
   password: string;
 };
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const [errors] = useState<{ [key: string]: string }>({});
@@ -15,7 +14,6 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) navigate("/admin/products");
@@ -35,6 +33,7 @@ const LoginPage = () => {
       );
       toast.success("Login Successfull!");
       localStorage.setItem("token", data.token);
+      console.log(data);
       navigate("/admin/products");
     } catch (error) {
       toast.error("Login Failed! - " + error);
